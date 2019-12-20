@@ -1,8 +1,9 @@
 require "bundler/setup"
-require "waffle/maker"
 
 require "coveralls"
 Coveralls.wear!
+
+require "waffle/maker"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
