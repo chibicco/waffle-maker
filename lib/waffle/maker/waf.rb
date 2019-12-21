@@ -16,26 +16,19 @@ module Waffle
       # { raw: "2019/01/01 01:01:01\t8.8.8.8\t/users\t攻撃\t○", path: "/users" },
       # ...
       # ]
-      def all
-        readlines.each.with_object([]) do |line, o|
-          line.chomp.tap do |line|
-            o << {
-              raw: line,
-              path: line.split(/#{parse_symbol}/)[path_position]
-            }
-          end
+      def each
+        $stdin.each(chomp: true) do |line|
+          o = {
+            raw: line,
+            path: line.split(/#{parse_symbol}/)[path_position]
+          }
+          yield o
         end
       end
 
       # @override
       def parse_symbol
         ENV.fetch("IFS", "\t")
-      end
-
-      private
-
-      def readlines
-        @readlines ||= $stdin.readlines
       end
     end
   end
