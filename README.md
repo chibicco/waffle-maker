@@ -30,10 +30,10 @@ By passing the WAF log from the standard input, the log that matches the route i
 $ bundle exec rake waffle:filter < alert-201912.txt
 ```
 
-If the character encoding of the log is CP932, specify the encoding with the environment variable `RUBYOPT`.
+Depending on the execution environment, you may need to pre-convert the character encoding of the log.
 
 ```sh
-$ env RUBYOPT='-ECP932:CP932' bundle exec rake waffle:filter < alert-201912.txt
+$ iconv -f CP932 -t UTF-8 < alert-201912.txt | bundle exec rake waffle:filter 
 ```
 
 with options
