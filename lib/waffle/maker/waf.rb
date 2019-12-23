@@ -16,7 +16,7 @@ module Waffle
       # { raw: "2019/01/01 01:01:01\t8.8.8.8\t/users\t攻撃\t○", path: "/users" },
       # ...
       # ]
-      def each
+      def each(&_block)
         $stdin.each(chomp: true) do |line|
           o = {
             raw: line,
