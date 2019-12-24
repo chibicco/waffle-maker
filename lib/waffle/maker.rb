@@ -46,7 +46,7 @@ module Waffle
       end
 
       def wafs
-        @wafs ||= Waffle::Maker::Waf.new(options[:w]).all
+        @wafs ||= Waffle::Maker::Waf.new(options[:w])
       end
     end
   end
