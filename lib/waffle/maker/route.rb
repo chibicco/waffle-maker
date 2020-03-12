@@ -28,15 +28,29 @@ module Waffle
 
       private
 
+      class Rails
+        class << self
+          def routes
+            ::Rails.application.routes.routes
+          end
+
+          def inspector
+            ::ActionDispatch::Routing::RoutesInspector.new(Waffle::Maker::Route::Rails.routes)
+          end
+
+          def formatted_inspector
+            Waffle::Maker::Route::Rails.inspector.format(Waffle::Maker::Formatter.new)
+          end
+        end
+      end
+
       # [
       # ["home", "GET", "/home(.:format)", "homes#show"],
       # ["user", "GET", "/user(.:format)", "users#show"],
       # ...
       # ]
       def rails
-        routes = ::Rails.application.routes.routes
-        inspector = ::ActionDispatch::Routing::RoutesInspector.new(routes)
-        CSV.parse(inspector.format(Waffle::Maker::Formatter.new))
+        CSV.parse(Waffle::Maker::Route::Rails.formatted_inspector)
       end
     end
   end
