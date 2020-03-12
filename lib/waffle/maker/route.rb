@@ -5,10 +5,11 @@ require 'csv'
 module Waffle
   module Maker
     class Route
-      attr_accessor :path_position
+      attr_accessor :path_position, :silent_error
 
-      def initialize(path_position)
+      def initialize(path_position, silent_error)
         self.path_position = path_position
+        self.silent_error = silent_error
       end
 
       def all
@@ -38,8 +39,9 @@ module Waffle
             ::ActionDispatch::Routing::RoutesInspector.new(Waffle::Maker::Route::Rails.routes)
           end
 
-          def formatted_inspector
-            Waffle::Maker::Route::Rails.inspector.format(Waffle::Maker::Formatter.new)
+          # @param [Boolean] silent_error
+          def formatted_inspector(silent_error)
+            Waffle::Maker::Route::Rails.inspector.format(Waffle::Maker::Formatter.new(silent_error))
           end
         end
       end
@@ -50,7 +52,7 @@ module Waffle
       # ...
       # ]
       def rails
-        CSV.parse(Waffle::Maker::Route::Rails.formatted_inspector)
+        CSV.parse(Waffle::Maker::Route::Rails.formatted_inspector(silent_error))
       end
     end
   end

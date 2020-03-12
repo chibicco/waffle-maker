@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Waffle::Maker::Route do
-  let(:route) { Waffle::Maker::Route.new(2) }
+  let(:route) { Waffle::Maker::Route.new(2, false) }
 
   describe "#rails" do
     before do
@@ -15,6 +15,16 @@ RSpec.describe Waffle::Maker::Route do
 
       it "successfully parse csv" do
         expect(route.send(:rails)).to be_a_kind_of(Array)
+      end
+    end
+
+    context "when reqs error routes" do
+      let(:inspector) do
+        "home,GET,/home(.:format),homes#show\nGraphiQL::Rails::Engine {:graphql_path=>\"/graphql\"}"
+      end
+
+      it "has error" do
+        expect{ route.send(:rails) }.to raise_error(CSV::MalformedCSVError)
       end
     end
   end

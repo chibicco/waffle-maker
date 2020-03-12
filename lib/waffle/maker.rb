@@ -24,13 +24,14 @@ module Waffle
             o.banner = "Usage: #{$0}"
             o.on("-f number", "Column number that contains the rails path") { |v| options[:f] << v.to_i }
             o.on("-w number", "Column number that contains the waf path") { |v| options[:w] << v.to_i }
+            o.on("--silent-error", "Hide parsing errors, default is false") { |v| options[:silent_error] << v }
           }.parse!(argv)
         end
       end
 
       # @override
       def default_options
-        {f: 2, w: 2}
+        { f: 2, w: 2, silent_error: false }
       end
 
       def execute
@@ -42,7 +43,7 @@ module Waffle
       private
 
       def routes
-        @routes ||= Waffle::Maker::Route.new(options[:f]).paths
+        @routes ||= Waffle::Maker::Route.new(options[:f], options[:silent_error]).paths
       end
 
       def wafs
