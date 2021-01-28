@@ -4,6 +4,8 @@ require "coveralls"
 Coveralls.wear!
 
 require "waffle/maker"
+require "waffle/maker/api"
+require "shared_contexts/config"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
